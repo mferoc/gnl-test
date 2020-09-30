@@ -1,22 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mathferr <mathferr@student.42sp.org.br>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/08 16:32:21 by mathferr          #+#    #+#             */
-/*   Updated: 2020/09/30 17:41:09 by mathferr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 
 /*
 ** Allocates sufficient memory for a copy of the string s1, does the copy,
 ** and returns a pointer to it.
 */
-/*
+
 static char			*ft_strdup(const char *s1)
 {
 	char		*s2;
@@ -33,14 +21,13 @@ static char			*ft_strdup(const char *s1)
 	s2[i] = '\0';
 	return (s2);
 }
-*/
 
 /*
 ** Allocates with malloc() and returns a “fresh” string ending with ’\0’,
 ** result of the concatenation of s1 and s2. If the allocation fails the
 ** function returns NULL.
 */
-/*
+
 static char			*ft_strjoin(char const *s1, char const *s2)
 {
 	char		*s3;
@@ -64,7 +51,7 @@ static char			*ft_strjoin(char const *s1, char const *s2)
 	*tmp_s3 = '\0';
 	return (s3);
 }
-*/
+
 /*
 ** Verify if whatever is in the stack, has a newline. If it doesn't, returns
 ** a zero (0) to indicate that it's not valid. If there is a newline, we make a
@@ -109,7 +96,7 @@ static	int			gnl_read_file(int fd, char *heap, char **stack, char **line)
 	int				ret;
 	char			*tmp_stack;
 
-	while ((ret = read(fd, heap, BUFFER_SIZE)) > 0)
+	while ((ret = read(fd, heap, BUFF_SIZE)) > 0)
 	{
 		heap[ret] = '\0';
 		if (*stack)
@@ -148,19 +135,19 @@ static	int			gnl_read_file(int fd, char *heap, char **stack, char **line)
 
 int					get_next_line(int const fd, char **line)
 {
-	static char		*stack[256];
+	static char		*stack[MAX_FD];
 	char			*heap;
 	int				ret;
 	int				i;
 
 	if (!line || (fd < 0 || fd >= MAX_FD) || (read(fd, stack[fd], 0) < 0) \
-		|| !(heap = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1)))
+		|| !(heap = (char *)malloc(sizeof(char) * BUFF_SIZE + 1)))
 		return (-1);
 	if (stack[fd])
 		if (gnl_verify_line(&stack[fd], line))
 			return (1);
 	i = 0;
-	while (i < BUFFER_SIZE)
+	while (i < BUFF_SIZE)
 		heap[i++] = '\0';
 	ret = gnl_read_file(fd, heap, &stack[fd], line);
 	free(heap);
