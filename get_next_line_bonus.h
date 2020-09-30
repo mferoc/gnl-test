@@ -1,34 +1,29 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mathferr <mathferr@student.42sp.org.br>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/08 16:33:24 by mathferr          #+#    #+#             */
-/*   Updated: 2020/09/30 17:49:44 by mathferr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
+/*
+** Needed for malloc(), free() and write(). Also for typedef size_t and sizeof()
+*/
+
 # include <unistd.h>
-# include <string.h>
+# include <stdlib.h>
 
 /*
-** void	ft_strdel(char **as);
-** static char	*ft_strchr(const char *s, int c);
-** int	create_new_line(char **s, char **line, int fd, int ret);
+** Macro for the buffer size, the max number of file descriptors available, and
+** to get the correct return value from the gnl_read_file() function.
+** Find the max number of files:
+** Mac: launchctl limit maxfiles
+** Linux: ulimit -n
 */
-char	*ft_strdup(char *s);
-char	*ft_strnew(size_t size);
-size_t	ft_strlen(char const *s);
-int		get_next_line(int fd, char **line);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strsub(char const *s, unsigned int start, size_t len);
+
+# define BUFF_SIZE 8
+# define MAX_FD 1024 + 1
+# define RET_VALUE(ret)	ret > 0 ? 1 : ret
+
+/*
+** Prototype for the get_next_line() function.
+*/
+
+int		get_next_line(int const fd, char **line);
 
 #endif
